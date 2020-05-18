@@ -34,11 +34,11 @@ db.on('open', ()=> console.log(`Database is now connected`));
 
 //@DESC: DB SCHEMA
 const clientSchema = new mongoose.Schema({
-    id:{type: String, default: shortid.generate},
-    username: {type: String, required: true, trim: true},
+    _id:{type: String, default: shortid.generate},
+    username: {type: String, trim: true},
     //lastName: {type: String, required: true, trim: true},
-    email: {type: String, required: true, trim: true},
-    password: {type: String, required: true, trim: true},
+    email: {type: String, trim: true},
+    password: {type: String, trim: true},
     //address: {type: String, required: true, trim: true}
 });
 
@@ -65,25 +65,52 @@ app.get('/login', (req,res)=>{
     res.render('login');
 });
 
-app.get('/order', (req,res)=>{
-    
+app.get('/dashboard', (req,res)=>{
+    if(req.isAuthenticated()){
+        res.render('order', {username: req.user.username});
+        console.log(req.user);
+    }else{
+        res.redirect('/login');
+    }
 });
 
 //@DESC: POST route
 app.post('/register', (req,res)=>{
-    const{id, username, email, password} = req.body;
+    const{username, email, password} = req.body;
 
     Client.register({username:username}, password)
         .then(user => {
             passport.authenticate('local')(req,res, function(){
-                res.redirect('/order')
+                //redirect to order Page when save is successful
+                res.redirect('/dashboard')
             });
         })
         .catch(err=>{
             res.redirect('/register'),
-            console.log(`there was an error`)
+            console.log("Error: " + err);
         });
 
+});
+
+app.post("/login", (req,res)=>{
+
+    const user = new Client({
+        username: req.body.username,
+        password: req.body.password
+    });
+
+    //implement findOne and if available pass req.login
+
+    req.login(user, function(err){
+        if(err){
+            res.redirect('/login'),
+            console.log("Error: " + err);
+        }else{
+            passport.authenticate('local')(req,res, function(){
+            res.redirect('/dashboard')
+            });
+        }
+    });
 });
 
 const port = (process.env.PORT || 3000);

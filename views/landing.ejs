@@ -1,13 +1,21 @@
 <%- include('partials/header'); -%> 
 
-<div class="jumbotron text-center">
-    <h1 class="display-4">Welcome to Envoy!</h1>
-    <p class="lead">Your ultimate shopping assitant</p>
-</div>
+<div class="row">
+    <div class="col-12 col-md-4 col-lg-5">
+        <h1 class="mt-2"><strong class="cta">Delivery</strong></><br><small class="cta2"> to your door</small></h1>
+        <p class="lead">Time-definite, <br> same-day delivery.</p>
 
-<div>
-    <h4>Shopping History</h4>
-    
+        <div class="px-2 py-4">
+            <a href="/login"  class="btn loginBtn">
+                Login
+                <span class="ml-1">
+                    <i class="fas fa-sign-in-alt"></i>
+                </span>    
+            </a>
+            <p class="signupReq mt-2 pl-4">No account? <a href="/register" class="landingSignup">Signup</a> </p>
+        </div>
+        
+    </div>
 </div>
 
 <%- include('partials/footer'); -%> 
