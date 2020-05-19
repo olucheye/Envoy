@@ -13,9 +13,7 @@
     color: #FC820E;
 }
 
-.custom-toggler .navbar-toggler-icon {
-	background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(0,31,63)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
-}
+=
 
     border-radius: 50px;
     background: #55b9f3;
@@ -42,6 +40,12 @@ body{
     background-size: 550px;
     background-position: center bottom;
     color: #F8FAFA;
+}
+
+.brand{
+    font-size: 1.5em;
+    font-weight: 700;
+    letter-spacing: 2px;
 }
 
 .custom-toggler .navbar-toggler-icon {
@@ -78,6 +82,7 @@ h1{
     border-radius: 25px;
 }
 
+h4,
 .signupReq{
     color: #010404;
 }
@@ -85,4 +90,12 @@ h1{
     color: #010404;
     font-weight: 500;
     text-decoration: underline;
+}
+
+.or,
+h5{
+    border-radius: 50px;
+    background: #1ba6c6;
+    box-shadow:  5px 5px 20px #489dcf, 
+             -5px -5px 20px #62d5ff;
 }

@@ -37,7 +37,7 @@ const clientSchema = new mongoose.Schema({
     _id:{type: String, default: shortid.generate},
     username: {type: String, trim: true},
     //lastName: {type: String, required: true, trim: true},
-    email: {type: String, trim: true},
+    //email: {type: String, trim: true},
     password: {type: String, trim: true},
     //address: {type: String, required: true, trim: true}
 });
@@ -65,10 +65,26 @@ app.get('/login', (req,res)=>{
     res.render('login');
 });
 
+
+//schema and model for list items
+const shoppingSchema = new mongoose.Schema({
+    _id: mongoose.ObjectId,
+    name: {type: String, trim: true},
+});
+
+const Errand = mongoose.model('Item', shoppingSchema);
+
+//Dashboard, on load,
 app.get('/dashboard', (req,res)=>{
     if(req.isAuthenticated()){
-        res.render('order', {username: req.user.username});
-        console.log(req.user);
+        //get all of the items in the list
+        Errand.find()
+        .then(items =>{
+            //renders dashboard and items requested
+            res.render('dashboard', {username: req.user, shoppingList: items});
+            console.log(req.user);
+        })
+        .catch(err=> console.log(`Error: ${err}`))
     }else{
         res.redirect('/login');
     }
@@ -76,7 +92,7 @@ app.get('/dashboard', (req,res)=>{
 
 //@DESC: POST route
 app.post('/register', (req,res)=>{
-    const{username, email, password} = req.body;
+    const{username, password} = req.body;
 
     Client.register({username:username}, password)
         .then(user => {
@@ -112,6 +128,25 @@ app.post("/login", (req,res)=>{
         }
     });
 });
+
+
+//@DESC: POST Request from dashboard form
+app.post('/addItem', (req,res)=>{
+
+    const {newItem, userid} = req.body;
+
+    const newRequest = new Errand({ id:userid, name:newItem})
+    
+    newRequest.save()
+        .then(item=> {
+            res.status(200);
+            res.redirect('/dashboard');
+        })
+        .catch(err=>{
+            console.log(`There was error creating the item: ${err}`)
+        })
+});
+
 
 const port = (process.env.PORT || 3000);
 app.listen(port, ()=> console.log(`Server is now running on Port ${port}`))
