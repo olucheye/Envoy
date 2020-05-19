@@ -9,7 +9,7 @@
             <div class="items">
                 <%# pass in array of items here  %> 
                 <%shoppingList.forEach(item=>{  %>
-                    <%console.log(item)%>
+                    <%#console.log(item)%>
                     <li> <%= item.name %>  </li>
                 <% })  %>
             </div>
@@ -20,7 +20,7 @@
         </div>
         <form action="/addItem" method="post">
             <input type="text" name="newItem" id="newItem" class="form-control" placeholder="Enter a new item" required>
-            <input type="hidden" name="<%= username.id %> " id="userid">
+            <input type="hidden" name="userid" value="<%=username.id%>" id="userid">
             <input type="submit" value="ADD" class="submitItem my-3 px-5 py-1">
         </form>
     </div>
