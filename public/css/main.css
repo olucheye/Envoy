@@ -71,8 +71,10 @@ h1{
 .lead{
     font-family: 'Montserrat', sans-serif;
     font-size: 1.4em;
+    font-weight: 400;
     padding: 0 20px;
-    color: white;   
+    color: white;
+    letter-spacing: 2px;  
 }
 
 .loginBtn{
@@ -98,4 +100,25 @@ h5{
     background: #1ba6c6;
     box-shadow:  5px 5px 20px #489dcf, 
              -5px -5px 20px #62d5ff;
+}
+/*
+.items{
+    border-radius: 10px;
+    background: #001f3f;
+    padding: 10px;
+}
+*/
+.items > li{
+    border-radius: 20px;
+    background: #001f3f;
+    list-style-type: none;
+    color: #F8FAFA;
+    margin: 10px 0;
+    padding: 10px;
+    text-transform: capitalize;
+}
+
+.submitItem{
+    background-color: #001f3f;
+    color: #489dcf;
 }

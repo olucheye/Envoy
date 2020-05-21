@@ -1,7 +1,5 @@
 const mongoose = require('mongoose');
 const shortid = require('shortid');
-const passportLocalMongoose = require('passport-local-mongoose');
-
 
 //schema and model for list items
 const shoppingSchema = new mongoose.Schema({

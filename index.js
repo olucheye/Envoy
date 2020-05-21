@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const ejs = require('ejs');
-const shortid = require('shortid');
+//const shortid = require('shortid');
 const dotenv = require('dotenv').config();
 const session = require('express-session');
 const passport = require('passport');
@@ -42,8 +42,10 @@ passport.use(Client.createStrategy());
 passport.serializeUser(Client.serializeUser());
 passport.deserializeUser(Client.deserializeUser());
 
+//@DESC: Router to Routes
 app.use('/', clientRouter);
 app.use('/dashboard', dashboardRouter);
 
+//PORT
 const port = (process.env.PORT || 3000);
 app.listen(port, ()=> console.log(`Server is now running on Port ${port}`))
