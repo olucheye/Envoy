@@ -1,17 +1,16 @@
 <%- include('partials/header'); %>
 <%-  include('partials/nav2'); -%> 
 
-<h4 class="mt-3">Welcome <%= username.username %> </h4>
+<h4 class="mt-3 mt-md-5">Welcome <%= username.username %> </h4>
 
 <div class="row px-4">
-    <div class="col-12 col-md-6">
+    <div class="col-12 col-md-7 mx-auto">
         <div class="col-12">
             <h4 class="my-4 p-3 text-center or"><strong>WISHLIST</strong></h4>
             <div class="items">
             <%if(shoppingList.length === 0){ %>
-                <div class="emptyBasket text-center">
-                    <p>Your wishlist is empty</p>
-                    <p>Start adding new items</p>
+                <div class="emptyBasket text-center mt-1 mt-md-5">
+                    <p class="defaultWelcome">Your wishlist is empty <br> <strong>Start adding new items </strong></p>
                 </div>  
             <%}else{ %>
                 <%# pass in array of items here  %> 
@@ -27,7 +26,7 @@
                 <input type="text" name="newItem" id="newItem" class="form-control" placeholder="Enter a new item" required autocomplete="false">
                 <input type="hidden" name="userid" value="<%=username.id%>" id="userid">
                 <div class="input-group-append">
-                    <input type="submit" value="ADD" class="submitItem input-group-text">
+                    <input type="submit" value="ADD" class="submitItem input-group-text text-warning">
                 </div>
             </div>
         </form>

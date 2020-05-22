@@ -41,19 +41,52 @@ router.route('/register')
     .post((req,res)=>{
     const{username, password} = req.body;
 
-    //@desc: Passport-local-mongoose method
-    Client.register({username:username}, password)
-        //handling promise response
-        .then(user => {
-            passport.authenticate('local')(req,res, function(){
-                //redirect to Client dashboard when account is created
-                res.redirect('/dashboard')
-            });
-        })
-        .catch(err=>{
-            res.redirect('/register'),
-            console.log("Error: " + err);
+    let trimmedUsername = username.trim();
+    let trimmedPassword = password.trim();
+
+    //finds user and pushes error
+    const alreadyRegistered =  Client.findOne({username: trimmedUsername}, (err,client)=>{
+        if(!client){
+            return true;
+        }
+    });
+
+    let errors = [];
+    //validate presence of both username & password
+    if(!username || !password){
+        errors.push({msg: 'Please fill in the required fields'});
+    }
+    //validate password length
+    if(password.length < 5){
+        errors.push({msg: 'Password to short'});
+    }
+
+    if(alreadyRegistered){
+        errors.push({msg: `Username is taken already`})
+    }
+
+    if(errors.length > 0){
+        res.render('register', {
+            errors,
+            username,
+            password
         });
+    }else{
+        //@desc: Passport-local-mongoose method
+        Client.register({username:username}, password)
+            //handling promise response
+            .then(user => {
+                passport.authenticate('local')(req,res, function(){
+                    //redirect to Client dashboard when account is created
+                    res.redirect('/dashboard')
+                });
+            })
+            .catch(err=>{
+                res.redirect('/register'),
+                console.log("Error: " + err);
+            });
+            
+    }
 
 });
 
@@ -61,24 +94,54 @@ router.route('/register')
 //@desc: Logins a registered user
 router.route('/login')
     .post((req,res)=>{
+        const{username, password} = req.body;
 
-        //define user and credentials to be passed into passport function
-        const user = new Client({
-            username: req.body.username,
-            password: req.body.password
+        let trimmedUsername = username.trim();
+        let trimmedPassword = password.trim();
+
+        let errors = [];
+        //validate presence of both username & password
+        if(!trimmedUsername || !trimmedPassword){
+            errors.push({msg: 'Please fill in the required fields'});
+        }
+        //validate password length
+        if(password.length < 5){
+            errors.push({msg: 'Password to short'});
+        }
+
+        
+        //finds user and pushes error
+        const clientFound =  Client.findOne({username: trimmedUsername}, (err,client)=>{
+            if(!client){ return errors.push({msg: `Username doesn't exisit`}) }
         });
 
-        //implement findOne and if available pass req.login
-        req.login(user, function(err){
-            if(err){
-                res.redirect('/login'),
-                console.log("Error: " + err);
-            }else{
-                passport.authenticate('local')(req,res, function(){
-                res.redirect('/dashboard')
-                });
-            }
-        });
+        if(errors.length > 0){
+            res.render('login', {
+                errors,
+                username,
+                password
+            });
+        }else{
+            //define user and credentials to be passed into passport function
+            const user = new Client({
+                username: req.body.username,
+                password: req.body.password
+            });
+
+            req.login(user, function(err){
+                if(err){
+                    console.log(`first one`)
+                    res.render('login')
+                }else{
+                    passport.authenticate('local')(req,res, function(err){
+                        //redirect to Client dashboard when account is created
+                        res.redirect('/dashboard')
+                    });
+                }
+            })
+        }
+
+       
     });
 
 
