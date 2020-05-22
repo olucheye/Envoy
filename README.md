@@ -1,5 +1,5 @@
 # Envoy
-NodeJS Shopping Assistant - Implementing CRUD app &amp; PassportJS Authentication
+__NodeJS Shopping Assistant - Implementing CRUD app &amp; PassportJS Authentication__
 
 ![Web App Screenshot](https://i.imgur.com/qSDMLUO.png)
 
