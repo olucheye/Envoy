@@ -8,7 +8,5 @@ const shoppingSchema = new mongoose.Schema({
     name: {type: String, trim: true},
 });
 
-const Errand = mongoose.model('Item', shoppingSchema);
-
-
-module.exports = Errand;
+//exporting items from model
+module.exports = mongoose.model('Item', shoppingSchema);
