@@ -6,13 +6,13 @@ const dbOptions = {
    useNewUrlParser:true,
    useUnifiedTopology: true,
    useCreateIndex: true
-}
+};
 
 function initDB() {
    mongoose
       .connect(dbURI, dbOptions)
-      .then(()=> console.log(` ::: Database is now connected`))
-      .catch((err) => console.log(`::: Error!, Couldn't connect to databse`));
+      .then(()=> console.log(` :::>  Database is now connected`))
+      .catch((err) => console.log(`:::> Error!, Couldn't connect to databse`));
 }
 
 module.exports = initDB;

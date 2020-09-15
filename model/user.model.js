@@ -1,18 +1,68 @@
 const mongoose = require('mongoose');
-const shortid = require('shortid');
-const passportLocalMongoose = require('passport-local-mongoose');
+const bcrypt = require('bcryptjs'); //used to encrypt password
+const saltRounds = 10;
+
 
 //@DESC: DB SCHEMA
 const clientSchema = new mongoose.Schema({
-    _id:{type: String, default: shortid.generate},
-    username: {type: String, trim: true},
-    password: {type: String, trim: true},
+   username: {
+      type: String, 
+      trim: true,
+      unique: true,
+      required: [true, "Please provide a username"]
+   },
+   hashedPassword: {
+      type: String, 
+      trim: true,
+   },
+   email: {
+      type: String,
+      match: [/.+\@.+\..+/, 'Please fill a valid email address'], 
+      trim: true,
+      unique: true,
+      required: [true, "Email already exists"]
+   },
+   address: {
+      type: String,
+   }
+},
+{timestamps: true});
+
+
+/**
+ * @action Pre-Save hook to hash password before saving
+ */
+clientSchema.pre('save', async function(next){
+   this.hashedPassword = await this.encryptPassword(this.password.trim());
+   next();
 });
 
-//@plugin localMongoose right after Schema
-clientSchema.plugin(passportLocalMongoose);
+/**
+ * @action Schema methods
+ * @methods 
+ *    - encryptPassword
+ *    - genSalt
+ *    -authPassword
+ */
+clientSchema.methods = {
+   //encryptPassword Method returns password hash using bcrypt
+   encryptPassword: async function(password){
+      if(!password) return '';
 
-//@DESC: db model
-const Client = mongoose.model("Client", clientSchema);
+      const salt = this.genSalt();
+      return hash = await bcrypt.hash(password, salt)
+   },
 
-module.exports = Client;
+   genSalt: async function(){
+      return await bcrypt.genSalt(10);
+   },
+
+   // authenticates each user password on login
+   authPassword: async function(password){
+      //response is Boolean
+      return await bcrypt.compare(password, this.hashedPassword);
+   }
+}
+
+//DB model export 
+module.exports = mongoose.model("Client", clientSchema);

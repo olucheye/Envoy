@@ -1,12 +1,13 @@
 /**
  * @file: Controller Class that handles the routing to ejs views on Web
  * @action GET Requests to web routes
- */ 
+ */
 
-
+ const userService = require('../services/userService');
+ 
 class userController {
    //homepage
-   home(req,res){
+   landingPage(req,res){
       res.render('landing');
    }
    
@@ -15,20 +16,42 @@ class userController {
       res.render('register');
    }
 
-   //displays login page
-   login(req,res){
+   login(req, res){
       res.render('login');
    }
 
-   //logouts user from active session
-   logout(req,res){
-      //delay the process by 2secs
-        req.logout();
-        setTimeout(() => {
-            res.redirect('/');
-        }, 2000);
+   home(req, res){
+      res.render('dashboard');
    }
 
+   async createUser(req, res){
+      const data = await userService.register(req.body);
+      res.send(data);
+   }
+
+   itemById(req, res, next, id){
+
+   }
+
+   addToCart(req, res){
+
+   }
+
+   allCart(req, res){
+
+   }
+
+   findItemInCart(req, res){
+
+   }
+
+   updateItemInCart(req, res){
+
+   }
+
+   removeFromCart(req, res){
+
+   }
 }
 
 module.exports = new userController();
