@@ -5,11 +5,10 @@ __NodeJS Shopping Assistant - Implementing CRUD app &amp; PassportJS Authenticat
 
 ## Project goal
 
-- User Authentication With Passport.js
-- Create User Account
-- Update User Account with wishlist
-- Authenticate on log-in
-- Logout
+- User Authentication
+- USer Authorization
+- Cookie management
+- JWT Auth
 
 ## Clone & Build on local
 
